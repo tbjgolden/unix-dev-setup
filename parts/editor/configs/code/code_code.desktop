@@ -1,5 +1,5 @@
 [Desktop Action new-empty-window]
-Exec=ELECTRON_TRASH=kioclient5 $HOME/Packages/.bin/code --new-window %F
+Exec=ELECTRON_TRASH=kioclient5 $HOME/Packages/vscode-linux-x64/bin/code --new-window %F
 Icon=$HOME/Packages/vscode-linux-x64/resources/app/resources/linux/code.png
 Name=New Empty Window
 
@@ -7,7 +7,7 @@ Name=New Empty Window
 Actions=new-empty-window;
 Categories=Utility;TextEditor;Development;IDE;
 Comment=Code Editing. Redefined.
-Exec=ELECTRON_TRASH=kioclient5 $HOME/Packages/.bin/code %F
+Exec=ELECTRON_TRASH=kioclient5 $HOME/Packages/vscode-linux-x64/bin/code %F
 GenericName=Text Editor
 Icon=$HOME/Packages/vscode-linux-x64/resources/app/resources/linux/code.png
 Keywords=vscode;

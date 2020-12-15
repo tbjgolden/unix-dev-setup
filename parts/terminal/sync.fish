@@ -1,8 +1,5 @@
 set -l DIR (dirname (realpath (status --current-filename)))
 
-# Assume FIRSTRUN=true for install
-echo ">" $FIRSTRUN
-
 # Ensure .config exists
 mkdir -p ~/.config
 
@@ -11,10 +8,10 @@ rm -rf ~/.config/fish
 cp -r $DIR"/configs/fish" ~/.config/fish
 
 # Install alacritty
+# Note: alacritty is intentionally reinstalled with updates every sync
 cross_install alacritty
 
 # Copy alacritty config file
 rm -rf ~/.alacritty.yml
 rm -rf ~/.config/alacritty
 cp -r $DIR"/configs/alacritty" ~/.config/alacritty
-

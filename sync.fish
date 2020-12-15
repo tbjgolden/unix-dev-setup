@@ -34,6 +34,8 @@ end
 # imports
 set -g PARTS (ls -1 $ROOTDIR"/parts")
 
+# TODO: <- get terminal to run first
+
 for PART in $PARTS
     # work out if it needs an update or not
     set -l MD5SUM (string split "  " (tar -cOP $ROOTDIR"/parts/"$PART | md5sum))
@@ -52,6 +54,15 @@ for PART in $PARTS
         set_color normal
 
         source $ROOTDIR"/parts/"$PART"/sync.fish"
+
+        begin
+            # Manually add VS Code to menu
+            set -l IFS
+            set -l JSON (jq "."$PART"="$MD5SUM $STATEFILE)
+            set -l JSON $JSON[1]
+            echo $JSON >$STATEFILE
+        end
+
         echo (jq "."$PART"="$MD5SUM $STATEFILE) >$STATEFILE
 
         set_color green
