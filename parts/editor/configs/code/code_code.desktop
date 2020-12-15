@@ -1,0 +1,24 @@
+[Desktop Action new-empty-window]
+Exec=ELECTRON_TRASH=kioclient5 $HOME/Packages/.bin/code --new-window %F
+Icon=$HOME/Packages/vscode-linux-x64/resources/app/resources/linux/code.png
+Name=New Empty Window
+
+[Desktop Entry]
+Actions=new-empty-window;
+Categories=Utility;TextEditor;Development;IDE;
+Comment=Code Editing. Redefined.
+Exec=ELECTRON_TRASH=kioclient5 $HOME/Packages/.bin/code %F
+GenericName=Text Editor
+Icon=$HOME/Packages/vscode-linux-x64/resources/app/resources/linux/code.png
+Keywords=vscode;
+MimeType=text/plain;inode/directory;application/x-code-workspace;
+Name=Visual Studio Code
+NoDisplay=false
+Path[$e]=
+StartupNotify=false
+StartupWMClass=Code
+Terminal=0
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

@@ -1,0 +1,2 @@
+# directory uses to hold state for the setup and sync process
+.state.json
