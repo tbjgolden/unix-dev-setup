@@ -19,7 +19,12 @@ function prompt_pwd_full
 end
 
 function fish_prompt
+    set -l LOCAL_STATUS $status
+
     set -l cyan (set_color cyan)
+    set -l red (set_color red)
+    set -l green (set_color green)
+    set -l brblack (set_color brblack)
     set -l brcyan (set_color brcyan)
     set -l brgreen (set_color brgreen)
     set -l brblack (set_color brblack)
@@ -28,9 +33,17 @@ function fish_prompt
 
     set -l sttysizeout (string split " " (stty size))
 
-    set -l separator $brblack(string repeat -n $sttysizeout[2] "-")
+    set -l separator $brblack(string repeat -n $sttysizeout[2] "·")
     set -l arrow "»"
     set -l cwd $cyan(prompt_pwd)
+
+    set -l padding (string repeat -n (math 4 - (string length $LOCAL_STATUS)) "·")
+
+    if test (echo $LOCAL_STATUS) -eq 0
+        set statusfmt $green$LOCAL_STATUS$normal
+    else
+        set statusfmt $red$LOCAL_STATUS$normal
+    end
 
     if [ (_git_branch_name) ]
         set -l parenthesis_start $brcyan"("
@@ -48,5 +61,5 @@ function fish_prompt
     end
 
     echo $separator
-    echo -n -s $cwd $git_info $normal ' ' $arrow ' '
+    echo -n -s $cwd $git_info $normal ' ' $brblack $padding $normal '' $statusfmt ' ' $arrow ' '
 end

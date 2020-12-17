@@ -8,15 +8,16 @@ if test $FIRSTRUN = "true"
     if type -q brew
         # Mac
         brew install --cask visual-studio-code
+        symlink_cask_binary "Visual Studio Code.app/Contents/Resources/app/bin/code"
     else
         # Linux
-        mkdir -p ~/Packages/.bin
+        mkdir -p ~/Packages/bin
         rm -rf ~/Packages/vscode-linux-x64 ~/Packages/vscode-linux-x64.tar
         brotli -d $DIR"/configs/code/vscode-linux-x64.tar.br"
         tar -xf $DIR"/configs/code/vscode-linux-x64.tar" -C ~/Packages
         rm -rf $DIR"/configs/code/vscode-linux-x64.tar"
-        rm ~/Packages/.bin/code
-        ln -s ~/Packages/vscode-linux-x64/.bin/code ~/Packages/.bin/code
+        rm ~/Packages/bin/code
+        ln -s ~/Packages/vscode-linux-x64/bin/code ~/Packages/bin/code
 
         begin
             # Manually add VS Code to menu
@@ -48,24 +49,36 @@ if test $FIRSTRUN = "true"
             end
         end
     end
+
+    rm -rf ~/.vscode
+
+    switch (uname)
+        case Linux
+            set VSCODE_CONFIG $HOME"/.config/Code"
+        case Darwin
+            set VSCODE_CONFIG $HOME"/Library/Application Support/Code"
+        case '*'
+            exit 1
+    end
+
+    mkdir -p $VSCODE_CONFIG
+    rm -rf $VSCODE_CONFIG"/User"
+    cp -r $DIR"/configs/code/User" $VSCODE_CONFIG"/User"
 end
 
-rm -rf ~/.vscode
+set INSTALLED_VSCODE_EXTENSIONS (string lower (code --list-extensions))
 
+# update vscode extensions
 set VSCODE_EXTENSIONS (cat $DIR"/configs/code/extensions.txt")
+
 for VSCODE_EXTENSION in $VSCODE_EXTENSIONS
-    echo "code --install-extension "$VSCODE_EXTENSION | fish
+    set -l EXT_WITHOUT_VERSION (string split '@' $VSCODE_EXTENSION)
+    set -l EXT_WITHOUT_VERSION $EXT_WITHOUT_VERSION[1]
+    if not contains $EXT_WITHOUT_VERSION $INSTALLED_VSCODE_EXTENSIONS
+        echo "code --install-extension "$VSCODE_EXTENSION | fish
+    end
 end
 
-switch (uname)
-    case Linux
-        set VSCODE_CONFIG $HOME"/.config/Code"
-    case Darwin
-        set VSCODE_CONFIG $HOME"/Library/Application Support/Code"
-    case '*'
-        exit 1
-end
-
-mkdir -p $VSCODE_CONFIG
-rm -rf $VSCODE_CONFIG"/User"
-cp -r $DIR"/configs/code/User" $VSCODE_CONFIG"/User"
+# update vimrc
+rm -rf ~/.vimrc
+cp $DIR"/configs/vim/.vimrc" ~/.vimrc

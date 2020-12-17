@@ -68,6 +68,10 @@ for PART in $PARTS
         set_color green
         echo "["$PART":done]"
         set_color normal
+    else
+        set_color brblack
+        echo "["$PART":skip]"
+        set_color normal
     end
 end
 

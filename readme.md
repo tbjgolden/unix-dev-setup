@@ -29,3 +29,13 @@ sudo pacman -Syu fish
 ```sh
 curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/tbjgolden/unix-dev-setup/main/install.sh | fish
 ```
+
+---
+
+## What's inside?
+
+- [ ] Installs shell functions and utilities
+- [ ] Installs asdf-vm; then installs node, yarn, rust, python3, octave with it
+- [x] Installs browser (firefox) and sets it up
+- [ ] Installs bitwarden
+- [ ] Installs custom fonts
