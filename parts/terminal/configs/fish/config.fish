@@ -4,10 +4,6 @@ set -U VISUAL code
 set -U BROWSER firefox
 set -U ELECTRON_TRASH kioclient5
 
-if test -f ~/.fishrc.fish
-    source ~/.fishrc.fish
-end
-
 alias ga="git add"
 alias gcl="git clone"
 alias gc="git commit"
@@ -87,3 +83,13 @@ function resource
 end
 
 set -gx PATH ~/.yarn/bin ~/.cargo/bin ~/Packages/bin $PATH
+
+# device specific env
+if test -f ~/.fishrc.fish
+    source ~/.fishrc.fish
+end
+
+# asdf
+if test -f ~/.asdf/asdf.fish
+    source ~/.asdf/asdf.fish
+end

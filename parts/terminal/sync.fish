@@ -7,6 +7,11 @@ mkdir -p ~/.config
 rm -rf ~/.config/fish
 cp -r $DIR"/configs/fish" ~/.config/fish
 
+# Change default shell to fish
+if test $FIRSTRUN = "true"
+    chsh -s (which fish)
+end
+
 # Install alacritty
 # Note: alacritty is intentionally reinstalled with updates every sync
 cross_install alacritty

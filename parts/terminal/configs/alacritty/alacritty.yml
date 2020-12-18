@@ -368,7 +368,7 @@ cursor:
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
 shell:
-  program: /bin/fish
+  program: /usr/bin/fish
 #  args:
 #    - --login
 
