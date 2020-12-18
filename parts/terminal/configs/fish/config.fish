@@ -74,18 +74,24 @@ function gdb
     else
         git branch -D $argv
     end
-
-    # git branch -D
 end
 
 function resource
     source ~/.config/fish/config.fish
 end
 
-set BINARY_PATHS ~/.asdf/installs/*/*/bin
-set BINARY_PATHS $BINARY_PATHS[-1..1]
+if not contains ~/Packages/bin $PATH
+    # add dependency paths
+    set -l BINARY_PATHS ~/.asdf/installs/*/*/bin
+    set -l BINARY_PATHS $BINARY_PATHS[-1..1]
+    set YARN_NPM_PATH
 
-set -gx PATH ~/Packages/bin $BINARY_PATHS $PATH
+    if type -q yarn
+        set YARN_NPM_PATH (yarn global bin)
+    end
+
+    set -gx PATH ~/Packages/bin $YARN_NPM_PATH $BINARY_PATHS $PATH
+end
 
 # device specific env
 if test -f ~/.fishrc.fish
