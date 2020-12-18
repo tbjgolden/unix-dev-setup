@@ -14,3 +14,12 @@ end
 
 mkdir -p $FONTS_DIR
 cp -f $DIR/configs/*.ttf $FONTS_DIR
+
+switch (uname)
+  case "Linux"
+    sudo fc-cache -f -v
+  case "Darwin"
+    sudo atsutil databases -remove
+    atsutil server -shutdown
+    atsutil server -ping
+end

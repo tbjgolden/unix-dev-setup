@@ -82,7 +82,10 @@ function resource
     source ~/.config/fish/config.fish
 end
 
-set -gx PATH ~/.yarn/bin ~/.cargo/bin ~/Packages/bin $PATH
+set BINARY_PATHS ~/.asdf/installs/*/*/bin
+set BINARY_PATHS $BINARY_PATHS[-1..1]
+
+set -gx PATH ~/Packages/bin $BINARY_PATHS $PATH
 
 # device specific env
 if test -f ~/.fishrc.fish
