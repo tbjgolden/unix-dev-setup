@@ -20,3 +20,5 @@ cross_install alacritty
 rm -rf ~/.alacritty.yml
 rm -rf ~/.config/alacritty
 cp -r $DIR"/configs/alacritty" ~/.config/alacritty
+
+source ~/.config/fish/config.fish

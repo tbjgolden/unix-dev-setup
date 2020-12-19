@@ -1,8 +1,19 @@
 set -l DIR (dirname (realpath (status --current-filename)))
 
 if test $FIRSTRUN = "true"
-    cross_install firefox
+    # close open firefox
+    killall firefox
+    sleep 1
 
+    # clean out previous install of firefox, if it exists
+    if type -q brew
+        brew uninstall --cask --force --zap firefox
+    else if type -q pacman
+        sudo pacman -R --noconfirm firefox
+        sudo pacman -R --noconfirm manjaro-browser-settings
+    end
+
+    # find firefox config directory
     switch (uname)
         case Linux
             set FIREFOX_CONFIG $HOME"/.mozilla/firefox"
@@ -12,22 +23,38 @@ if test $FIRSTRUN = "true"
             exit 1
     end
 
-    # backup old profiles config file
-    if not test -f $FIREFOX_CONFIG"/profiles.ini.bkup"
-        if test -f $FIREFOX_CONFIG"/profiles.ini"
-            cp $FIREFOX_CONFIG"/profiles.ini" $FIREFOX_CONFIG"/profiles.ini.bkup"
+    rm -rf $FIREFOX_CONFIG
+
+    # install it
+    cross_install firefox
+
+    # open firefox to generate the default config
+    firefox &>/dev/null &
+
+    # and close it again after configs have been generated
+    if not test -f $FIREFOX_CONFIG/$ACTIVE_PROFILE/places.sqlite
+        sleep 1
+    end
+    sleep 1
+
+    killall firefox
+
+    # find the active profile
+    set PROFILES (cat $FIREFOX_CONFIG/profiles.ini)
+    for PROFILE in $PROFILES
+        if test (string sub -s 1 -l 8 $PROFILE) = 'Default='
+            set ACTIVE_PROFILE (string sub -s 9 $PROFILE)
+            break
         end
     end
 
-    # replace profiles config file
-    rm -rf $FIREFOX_CONFIG"/profiles.ini"
-    cp -r $DIR"/configs/firefox/profiles.ini" $FIREFOX_CONFIG"/profiles.ini"
+    if test -d $FIREFOX_CONFIG/$ACTIVE_PROFILE
+        # Remove default firefox bookmarks
+        sqlite3 $FIREFOX_CONFIG/$ACTIVE_PROFILE/places.sqlite 'delete from moz_bookmarks where guid not like "%\_" escape "\";'
+        echo "Deleted default bookmarks"
 
-    # decode and replace firefox profile
-    rm -rf $FIREFOX_CONFIG"/spxqclgh.default-release"
-    cp -r $DIR"/configs/firefox/spxqclgh.default-release.tar.br.gpg" $FIREFOX_CONFIG"/spxqclgh.default-release.tar.br.gpg"
-    gpg --pinentry loopback -o $FIREFOX_CONFIG"/spxqclgh.default-release.tar.br" -d $FIREFOX_CONFIG"/spxqclgh.default-release.tar.br.gpg"
-    brotli -d $FIREFOX_CONFIG"/spxqclgh.default-release.tar.br"
-    tar -xf $FIREFOX_CONFIG"/spxqclgh.default-release.tar" -C $FIREFOX_CONFIG
-    rm -rf $FIREFOX_CONFIG"/spxqclgh.default-release.tar.br.gpg" $FIREFOX_CONFIG"/spxqclgh.default-release.tar.br" $FIREFOX_CONFIG"/spxqclgh.default-release.tar"
+        # Add preferred layout and configuration
+        cp -rf $DIR/configs/firefox/prefs.js $FIREFOX_CONFIG/$ACTIVE_PROFILE/prefs.js
+        echo "Installed preferred layout and configuration"
+    end
 end

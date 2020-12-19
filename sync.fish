@@ -31,12 +31,7 @@ else
     echo "{}" >$STATEFILE
 end
 
-# imports
-set -g PARTS (ls -1 $ROOTDIR"/parts")
-
-# TODO: <- get terminal to run first
-
-for PART in $PARTS
+for PART in terminal fonts editor runtimes browser audio repos
     # work out if it needs an update or not
     set -l MD5SUM (string split "  " (tar -cOP $ROOTDIR"/parts/"$PART | md5sum))
     set -l MD5SUM "\""$MD5SUM[1]"\""
@@ -74,5 +69,3 @@ for PART in $PARTS
         set_color normal
     end
 end
-
-# source $ROOTDIR"/parts/terminal/sync.fish"

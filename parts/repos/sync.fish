@@ -31,8 +31,11 @@ git config --global init.defaultBranch main
 set REPOS_JSON ~/Documents/.repos.json
 
 rm -f $REPOS_JSON
+
+# fetches all repositories from the last 2 calendar years
 curl -u $GITHUB_USERNAME':'$GITHUB_TOKEN "https://api.github.com/user/repos?per_page=100&since="(echo (math (date +"%Y") - 2)'-01-01T00:00:01Z') | jq 'map({name,clone_url,private,fork})' >$REPOS_JSON
 
+# filter out forks and split them into open and closed source
 eval set PUBLIC_REPOS (echo (cat ~/Documents/.repos.json | jq -r 'map(select(.fork == false) | select(.private == false) | .clone_url) | @sh'))
 eval set PRIVATE_REPOS (echo (cat ~/Documents/.repos.json | jq -r 'map(select(.fork == false) | select(.private == true) | .clone_url) | @sh'))
 
