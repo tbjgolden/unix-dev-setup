@@ -80,18 +80,17 @@ function resource
     source ~/.config/fish/config.fish
 end
 
-if not contains ~/Packages/bin $PATH
-    # add dependency paths
-    set -l BINARY_PATHS ~/.asdf/installs/*/*/bin
-    set -l BINARY_PATHS $BINARY_PATHS[-1..1]
-    set YARN_NPM_PATH
+set -l BINARY_PATHS ~/.asdf/installs/*/*/bin
+set -l BINARY_PATHS $BINARY_PATHS[-1..1]
+set extra_paths (yarn global bin) $BINARY_PATHS ~/Packages/bin
 
-    if type -q yarn
-        set YARN_NPM_PATH (yarn global bin)
+for extra_path in $extra_paths
+    if not contains $extra_path $fish_user_paths
+        set -U -a fish_user_paths $extra_path
     end
-
-    set -gx PATH ~/Packages/bin $YARN_NPM_PATH $BINARY_PATHS $PATH
 end
+
+# set -U fish_user_paths /usr/local/bin $fish_user_paths
 
 # device specific env
 if test -f ~/.fishrc.fish
