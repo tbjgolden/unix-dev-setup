@@ -35,6 +35,7 @@ A series of scripts to set up a Unix computer with all that I\* need to get goin
 - [x] Installs custom fonts
 - [x] Clones down my repos
 - [ ] Sets up my credentials and password manager (securely, of course)
+- [ ] crontab syncs every day
 
 ---
 

@@ -2,7 +2,8 @@
 set -U EDITOR vim
 set -U VISUAL code
 set -U BROWSER firefox
-set -U ELECTRON_TRASH kioclient5
+
+# set -U ELECTRON_TRASH kioclient5 (<- needs fix)
 
 alias ga="git add"
 alias gcl="git clone"
@@ -76,6 +77,14 @@ function gdb
     end
 end
 
+function bw
+    command bw $argv --session $BW_SESSION
+end
+
+function bws
+    bw list items --search (string join ' ' $argv) | jq -r '.[] | select(.folderId == null) | [.name, .login.username, .login.password] | @tsv'
+end
+
 function resource
     source ~/.config/fish/config.fish
 end
@@ -89,8 +98,6 @@ for extra_path in $extra_paths
         set -U -a fish_user_paths $extra_path
     end
 end
-
-# set -U fish_user_paths /usr/local/bin $fish_user_paths
 
 # device specific env
 if test -f ~/.fishrc.fish
