@@ -69,5 +69,5 @@ sudo pacman -Syu fish
 ## Step 3 - Downloads and starts the install script
 
 ```sh
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/tbjgolden/unix-dev-setup/main/install.fish | fish -l
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/tbjgolden/unix-dev-setup/main/install.fish | fish -i
 ```
