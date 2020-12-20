@@ -34,7 +34,8 @@ A series of scripts to set up a Unix computer with all that I\* need to get goin
 - [x] Installs asdf-vm; then installs node, yarn, rust, python with it
 - [x] Installs custom fonts
 - [x] Clones down my repos
-- [ ] Sets up my credentials and password manager (securely, of course)
+- [x] Sets up my password manager
+- [ ] Sets up my git credentials
 - [ ] crontab syncs every day
 
 ---
@@ -68,5 +69,5 @@ sudo pacman -Syu fish
 ## Step 3 - Downloads and starts the install script
 
 ```sh
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/tbjgolden/unix-dev-setup/main/install.sh | fish
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/tbjgolden/unix-dev-setup/main/install.fish | fish
 ```
