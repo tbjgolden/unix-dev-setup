@@ -5,7 +5,7 @@ if test $FIRSTRUN = "true"
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
     mkdir -p ~/.config/fish/completions
     cp ~/.asdf/completions/asdf.fish ~/.config/fish/completions
-    resource
+    source ~/.asdf/asdf.fish
 
     asdf plugin add nodejs
     asdf plugin add yarn

@@ -2,6 +2,7 @@ set -l DIR (dirname (realpath (status --current-filename)))
 
 if test $FIRSTRUN = "true"
     yarn global add @bitwarden/cli
+
     echo "Login to bitwarden:"
     set output (command bw login)
 

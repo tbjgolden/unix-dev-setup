@@ -31,7 +31,7 @@ else
     echo "{}" >$STATEFILE
 end
 
-for PART in terminal fonts runtimes credentials editor browser audio repos
+for PART in runtimes terminal fonts credentials editor browser audio repos
     # work out if it needs an update or not
     set -l MD5SUM (string split "  " (tar -cOP $ROOTDIR"/parts/"$PART | md5sum))
     set -l MD5SUM "\""$MD5SUM[1]"\""
