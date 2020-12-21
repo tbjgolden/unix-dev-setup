@@ -82,6 +82,27 @@ function bw
 end
 
 function bws
+    set -l DIR (dirname (realpath (status --current-filename)))
+
+    # ask for login if 
+    if test -z $BW_SESSION
+        echo "Bitwarden session expired"
+
+        command bw logout &>/dev/null
+
+        echo "Login to bitwarden:"
+        set output (command bw login)
+
+        while test "$output[1]" != 'You are logged in!'
+            echo "Invalid login, try again:"
+            set output (command bw login)
+        end
+
+        if test (string sub -l 20 $output[4]) = '$ export BW_SESSION='
+            eval 'set -U BW_SESSION '(string sub -s 21 $output[4])
+        end
+    end
+
     bw list items --search (string join ' ' $argv) | jq -r '.[] | select(.folderId == null) | [.name, .login.username, .login.password] | @tsv'
 end
 

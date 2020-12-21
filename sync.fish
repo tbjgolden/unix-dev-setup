@@ -31,7 +31,21 @@ else
     echo "{}" >$STATEFILE
 end
 
-for PART in runtimes terminal fonts credentials editor browser audio repos
+set PARTS runtimes terminal fonts credentials editor browser audio repos
+if not test -z "$argv"
+    set ARGPARTS
+    for arg in $argv
+        if contains -- $arg $PARTS
+            set -a ARGPARTS $arg
+        end
+    end
+
+    if not test -z $ARGPARTS
+        set PARTS $ARGPARTS
+    end
+end
+
+for PART in $PARTS
     # work out if it needs an update or not
     set -l MD5SUM (string split "  " (tar -cOP $ROOTDIR"/parts/"$PART | md5sum))
     set -l MD5SUM "\""$MD5SUM[1]"\""
@@ -43,7 +57,14 @@ for PART in runtimes terminal fonts credentials editor browser audio repos
         set -g FIRSTRUN "false"
     end
 
+    set SHOULD_RUN_PART "false"
     if test $PREVMD5SUM != $MD5SUM
+        set SHOULD_RUN_PART "true"
+    else if contains -- -f $argv
+        set SHOULD_RUN_PART "true"
+    end
+
+    if test $SHOULD_RUN_PART = "true"
         set_color green
         echo "["$PART":started]"
         set_color normal
