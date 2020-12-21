@@ -106,7 +106,7 @@ function bws
     set SEARCH_RESULTS (bw list items --search (string join ' ' $argv) | jq -r '.[] | select(.folderId == null) | @json')
 
     for SEARCH_RESULT in $SEARCH_RESULTS
-        echo "----------------------------------------"
+        echo ""
         echo (echo $SEARCH_RESULT | jq -r '.name')
         set CREDS (echo $SEARCH_RESULT | jq -r '[.login.username, .login.password] | @tsv')
         if not test -z (string trim $CREDS)
@@ -126,7 +126,7 @@ function bws
                 echo ' ' $line
             end
         end
-        echo "----------------------------------------"
+        echo ""
     end
 end
 
