@@ -84,7 +84,7 @@ end
 function bws
     set -l DIR (dirname (realpath (status --current-filename)))
 
-    # ask for login if 
+    # ask for login if session variable is missing
     if test -z $BW_SESSION
         echo "Bitwarden session expired"
 
@@ -103,7 +103,31 @@ function bws
         end
     end
 
-    bw list items --search (string join ' ' $argv) | jq -r '.[] | select(.folderId == null) | [.name, .login.username, .login.password] | @tsv'
+    set SEARCH_RESULTS (bw list items --search (string join ' ' $argv) | jq -r '.[] | select(.folderId == null) | @json')
+
+    for SEARCH_RESULT in $SEARCH_RESULTS
+        echo "----------------------------------------"
+        echo (echo $SEARCH_RESULT | jq -r '.name')
+        set CREDS (echo $SEARCH_RESULT | jq -r '[.login.username, .login.password] | @tsv')
+        if not test -z (string trim $CREDS)
+            echo ' ' $CREDS
+        end
+        set NOTES (echo $SEARCH_RESULT | jq -r '.notes')
+        if test "$NOTES" != "null"
+            echo ""
+            for line in $NOTES
+                echo ' ' $line
+            end
+        end
+        set NOTES (echo $SEARCH_RESULT | jq -r '.login.notes')
+        if test "$NOTES" != "null"
+            echo ""
+            for line in $NOTES
+                echo ' ' $line
+            end
+        end
+        echo "----------------------------------------"
+    end
 end
 
 function resource
