@@ -3,13 +3,12 @@ set -U EDITOR vim
 set -U VISUAL code
 set -U BROWSER firefox
 
-# set -U ELECTRON_TRASH kioclient5 (<- needs fix)
+set -U ELECTRON_TRASH kioclient5
 
 alias ga="git add"
 alias gcl="git clone"
 alias gc="git commit"
 alias gr="git reset"
-alias gch="git checkout"
 alias gpl="git pull origin"
 alias gph="git push origin"
 alias gnb="git checkout -b"
@@ -77,6 +76,36 @@ function gdb
     end
 end
 
+function gch
+    if test -z $argv[1]
+        git checkout
+        return $status
+    end
+
+    set -l branches (string sub -s 3 (git branch))
+    
+    if is_int $argv[1]
+        set has_branch_with_number_name "false"
+        for branch in $branches
+            if is_int $branch
+                set has_branch_with_number_name "true"
+                break
+            end
+        end
+
+        if test $has_branch_with_number_name = "true"
+            git checkout $argv
+        else if contains $argv[1] (seq (count $branches))
+            git checkout $branches[$argv[1]]
+        else
+            echo "fatal: branch index out of bounds" >2
+            return 69
+        end
+    else
+        git checkout $argv
+    end
+end
+
 function bw
     command bw $argv --session $BW_SESSION
 end
@@ -136,7 +165,7 @@ end
 
 set -l BINARY_PATHS ~/.asdf/installs/*/*/bin
 set -l BINARY_PATHS $BINARY_PATHS[-1..1]
-set extra_paths (yarn global bin) $BINARY_PATHS ~/Packages/bin
+set extra_paths (yarn global bin) ~/.local/bin $BINARY_PATHS ~/Packages/bin
 
 for extra_path in $extra_paths
     if not contains $extra_path $fish_user_paths

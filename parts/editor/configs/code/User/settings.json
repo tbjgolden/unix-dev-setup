@@ -32,5 +32,21 @@
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "workbench.activityBar.visible": true
+  "workbench.activityBar.visible": true,
+  "update.mode": "none",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "python.pythonPath": "/home/tom/.asdf/shims/python",
+  "python.sortImports.args": [
+      "-rc",
+      "-sp isort.cfg"
+  ],
+  "python.formatting.provider": "black",
+  "[python]": {
+      "editor.defaultFormatter": "ms-python.python",
+      "editor.codeActionsOnSave": {
+          "source.organizeImports": true
+      }
+  }
 }
