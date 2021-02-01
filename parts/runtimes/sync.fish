@@ -28,8 +28,6 @@ if test $FIRSTRUN = "true"
     echo "yarn $YARN_VERSION" >> ~/.tool-versions
     echo "python $PYTHON_VERSION" >> ~/.tool-versions
     echo "rust $RUST_VERSION" >> ~/.tool-versions
-
-    cross_install octave
 else
     asdf update
 end

@@ -1,9 +1,11 @@
 
-set -U EDITOR vim
-set -U VISUAL code
-set -U BROWSER firefox
+set -Ux EDITOR vim
+set -Ux VISUAL vim
+set -Ux BROWSER firefox
 
-set -U ELECTRON_TRASH kioclient5
+if test $XDG_CURRENT_DESKTOP = "KDE"
+    set -Ux ELECTRON_TRASH kioclient5
+end
 
 alias ga="git add"
 alias gcl="git clone"

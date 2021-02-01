@@ -3,6 +3,8 @@ function cross_install
 
     if type -q pacman
         sudo pacman -Syu --noconfirm $argv
+    else if type -q apt
+        sudo apt install -y $argv
     else if type -q brew
         set casks
         set other
