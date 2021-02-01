@@ -3,7 +3,7 @@ set -Ux EDITOR vim
 set -Ux VISUAL vim
 set -Ux BROWSER firefox
 
-if test $XDG_CURRENT_DESKTOP = "KDE"
+if test "$XDG_CURRENT_DESKTOP" = "KDE"
     set -Ux ELECTRON_TRASH kioclient5
 end
 
